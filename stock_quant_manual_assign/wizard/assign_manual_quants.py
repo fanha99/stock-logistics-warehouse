@@ -125,17 +125,15 @@ class AssignManualQuantsLines(models.TransientModel):
         comodel_name='stock.production.lot', string='Lot',
         related='quant.lot_id', readonly=True,
         groups="stock.group_production_lot")
-    in_date = fields.Date(
-        string='Incoming Date', readonly=True)
     package_id = fields.Many2one(
         comodel_name='stock.quant.package', string='Package',
         related='quant.package_id', readonly=True,
         groups="stock.group_tracking_lot")
-    qty = fields.Float(
-        string='QTY', digits=dp.get_precision('Product Unit of Measure'))
     on_hand = fields.Float(
         string='On Hand', digits=dp.get_precision('Product Unit of Measure'))
     reserved = fields.Float(
         string='Others Reserved',
         digits=dp.get_precision('Product Unit of Measure'))
     selected = fields.Boolean(string='Select')
+    qty = fields.Float(
+        string='QTY', digits=dp.get_precision('Product Unit of Measure'))
