@@ -9,6 +9,7 @@
                     <field name="quants_lines" colspan="4"
                            nolabel="1"
                            context="{'kanban_view_ref': 'stock_quant_manual_assign.quants_lines_kanban',
+                                     'form_view_ref': 'stock_quant_manual_assign.quants_lines_form',
                                      'tree_view_ref': 'stock_quant_manual_assign.quants_lines_tree'}"
                     />
                     <field name="move_qty" colspan="2" readonly="1"/>
@@ -28,7 +29,7 @@
         <field name="model">assign.manual.quants.lines</field>
         <field name="priority" eval="999"/>
         <field name="arch" type="xml">
-            <kanban delete="0" create="0">
+            <kanban create="false" delete="false">
                 <templates>
                 <t t-name="kanban-box">
                     <div t-attf-class="oe_kanban_global_click">
@@ -56,7 +57,7 @@
         <field name="model">assign.manual.quants.lines</field>
         <field name="priority" eval="999"/>
         <field name="arch" type="xml">
-            <tree editable="top" delete="0" create="0">
+            <tree editable="top" create="false" delete="false">
                 <field name="location_id" readonly="1"/>
                 <field name="lot_id" readonly="1"/>
                 <field name="on_hand" readonly="1"/>
@@ -68,7 +69,25 @@
         </field>
     </record>
 
-
+    <record id="quants_lines_form" model="ir.ui.view">
+        <field name="model">assign.manual.quants.lines</field>
+        <field name="priority" eval="999"/>
+        <field name="arch" type="xml">
+            <form create="false" delete="false">
+                <group col='4' colspan="4">
+                    <field name="location_id" readonly="1"/>
+                    <field name="lot_id" readonly="1"/>
+                    <field name="on_hand" readonly="1"/>
+                    <field name="reserved" readonly="1"/>
+                    <field name="package_id" readonly="1"/>
+                    <field name="selected" />
+                    <field name="qty" attrs="{'readonly':[('selected', '=' ,False)]}" sum="qty"/>
+                </group>
+                <footer>
+                </footer>
+            </form>
+        </field>
+    </record>
 
     <act_window name="Manual quants" res_model="assign.manual.quants"
         src_model="stock.move" view_mode="form" target="new"
