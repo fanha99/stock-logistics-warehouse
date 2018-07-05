@@ -12,4 +12,19 @@
             </button>
         </field>
     </record>
+    
+    <record id="stock_picking_manual_quants_kanban_view" model="ir.ui.view">
+        <field name="name">stock.move.kanban</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_kandan" />
+        <field name="arch" type="xml">
+            <button name="action_show_details" position="before">
+                <field name="picking_code" invisible="1"/>
+                <button name="%(assign_manual_quants_action)d" type="action" class="o_icon_button fa fa-tags" 
+                        string="Manual Quants" options='{"warn": true}'
+                        attrs="{'invisible':['|',('picking_code','=','incoming'),('state','not in',('confirmed','assigned','partially_available'))]}"/>
+            </button>        
+        </field>
+    </record>
+    
 </odoo>

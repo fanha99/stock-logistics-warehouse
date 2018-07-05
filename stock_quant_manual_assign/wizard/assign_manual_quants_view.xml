@@ -6,17 +6,11 @@
         <field name="arch" type="xml">
             <form name="Manual Quants">
                 <group col='4' colspan="4">
-                    <field name='quants_lines' colspan="4">
-                        <tree editable="top" delete="0" create="0">
-                            <field name="lot_id" readonly="1"/>
-                            <field name="on_hand" readonly="1"/>
-                            <field name="reserved" readonly="1"/>
-                            <field name="location_id" readonly="1"/>
-                            <field name="package_id" readonly="1"/>
-                            <field name="selected" />
-                            <field name="qty" attrs="{'readonly':[('selected', '=' ,False)]}" sum="qty"/>
-                        </tree>
-                    </field>
+                    <field name="quants_lines" colspan="4"
+                           nolabel="1"
+                           context="{'kanban_view_ref': 'stock_quant_manual_assign.quants_lines_kanban',
+                                     'tree_view_ref': 'stock_quant_manual_assign.quants_lines_tree'}"
+                    />
                     <field name="move_qty" colspan="2" readonly="1"/>
                     <field name="lines_qty" invisible="1" />
                 </group>
@@ -29,6 +23,52 @@
             </form>
         </field>
     </record>
+
+    <record id="quants_lines_kanban" model="ir.ui.view">
+        <field name="model">assign.manual.quants.lines</field>
+        <field name="priority" eval="999"/>
+        <field name="arch" type="xml">
+            <kanban delete="0" create="0">
+                <templates>
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_global_click">
+                        <div class="o_kanban_record_top">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title"><span>Lot: <field name="lot_id"/></span></strong>
+                            </div>                            
+                        </div>
+                        <div class="o_kanban_record_bottom">
+                            <div class="oe_kanban_bottom_left">
+                                <span>On Hand: <field name="on_hand"/></span>
+                            </div>
+                            <div class="oe_kanban_bottom_right">
+                                <span>Selected: <field name="qty"/></span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+        
+    <record id="quants_lines_tree" model="ir.ui.view">
+        <field name="model">assign.manual.quants.lines</field>
+        <field name="priority" eval="999"/>
+        <field name="arch" type="xml">
+            <tree editable="top" delete="0" create="0">
+                <field name="lot_id" readonly="1"/>
+                <field name="on_hand" readonly="1"/>
+                <field name="reserved" readonly="1"/>
+                <field name="location_id" readonly="1"/>
+                <field name="package_id" readonly="1"/>
+                <field name="selected" />
+                <field name="qty" attrs="{'readonly':[('selected', '=' ,False)]}" sum="qty"/>
+            </tree>
+        </field>
+    </record>
+
+
 
     <act_window name="Manual quants" res_model="assign.manual.quants"
         src_model="stock.move" view_mode="form" target="new"
