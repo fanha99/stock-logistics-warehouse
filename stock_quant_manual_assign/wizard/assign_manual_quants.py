@@ -57,6 +57,9 @@ class AssignManualQuants(models.TransientModel):
                 move._update_reserved_quantity(line.qty, available_quantity,
                                                move.location_id,
                                                lot_id=line.lot_id, strict=True)
+        if move.has_move_lines:
+            for ml in move.move_line_ids:
+                ml.qty_done = ml.product_qty
         move._recompute_state()
         move.mapped('picking_id')._compute_state()
         return {}
